@@ -1,29 +1,23 @@
 import React from "react";
 import "./App.css";
 import { useScript } from "usehooks-ts";
+import GoogleDriveComponent from "./GoogleDriveComponent";
+
+async function createPicker(scriptVars) {
+  const { gapi, apiKey, clientId, token } = scriptVars;
+}
 
 function App() {
-  const status = useScript(`https://apis.google.com/js/api.js`, {
-    removeOnUnmount: false,
-    id: "gapi",
-  });
-
-  const status2 = useScript(`https://accounts.google.com/gsi/client`, {
-    removeOnUnmount: false,
-    id: "google",
-  });
-
-  React.useEffect(() => {
-    if (typeof gapi !== "undefined") {
-      console.log("gapi is", gapi.load);
-    }
-    if (typeof google !== "undefined") {
-      console.log("google is", google.accounts);
-    }
-  }, [status, status2]);
+  const [scriptVars, setScriptVars] = React.useState({ loaded: false });
+  const onClickButton = () => {
+    createPicker(scriptVars);
+  };
   return (
     <div className="App">
+      <GoogleDriveComponent setScriptVars={setScriptVars} />
       <div>Hello</div>
+      <button onClick={onClickButton}></button>
+      <div>{scriptVars.loaded ? "loaded" : "not loaded"}</div>
     </div>
   );
 }
