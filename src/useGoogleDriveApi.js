@@ -1,7 +1,9 @@
 import React from "react";
 import { useScript } from "usehooks-ts";
 
-function GoogleDriveComponent({ setScriptVars }) {
+function useGoogleDriveApi() {
+  const [scriptVars, setScriptVars] = React.useState({ loaded: false });
+
   const status = useScript(`https://apis.google.com/js/api.js`, {
     removeOnUnmount: false,
     id: "gapi",
@@ -13,21 +15,20 @@ function GoogleDriveComponent({ setScriptVars }) {
   });
 
   const handleLoad = async (loadedGapi, loadedGoogle) => {
-    const { apiKey, clientId } = await fetch("/keys.json").then((res) => res.json());
+    const { apiKey, clientId } = await fetch("/keys.json").then((res) =>
+      res.json()
+    );
     const tokenClient = loadedGoogle.accounts.oauth2.initTokenClient({
       client_id: clientId,
       scope: "https://www.googleapis.com/auth/drive",
       callback: "", // defined later
     });
     loadedGapi.load("picker");
-    
 
     console.log(tokenClient);
 
     setScriptVars({
       loaded: true,
-      gapi: loadedGapi,
-      loadedGoogle: loadedGoogle,
       apiKey,
       clientId,
       tokenClient,
@@ -39,7 +40,7 @@ function GoogleDriveComponent({ setScriptVars }) {
       handleLoad(gapi, google);
     }
   }, [status, status2]);
-  return <></>;
+  return scriptVars;
 }
 
-export default GoogleDriveComponent;
+export default useGoogleDriveApi;
