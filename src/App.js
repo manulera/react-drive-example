@@ -1,15 +1,15 @@
 import React from "react";
 import "./App.css";
-import GoogleDriveComponent from "./GoogleDriveComponent";
 import {
   readFileFromGooglePicker,
   submitFileToGoogleDrive,
 } from "./googlePickerFunctions";
+import useGoogleDriveApi from "./useGoogleDriveApi";
 
 function App() {
-  const [scriptVars, setScriptVars] = React.useState({ loaded: false });
   const [inTextArea, setInTextArea] = React.useState("");
   const [userFileName, setUserFileName] = React.useState("");
+  const scriptVars = useGoogleDriveApi();
 
   const onClickButton = () => {
     readFileFromGooglePicker(scriptVars, setInTextArea);
@@ -21,8 +21,6 @@ function App() {
 
   return (
     <div className="App">
-      <GoogleDriveComponent setScriptVars={setScriptVars} />
-
       <div>Hello</div>
       <button onClick={onClickButton}>Read File</button>
 
