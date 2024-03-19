@@ -14,16 +14,22 @@ function GoogleDriveComponent({ setScriptVars }) {
 
   const handleLoad = async (loadedGapi, loadedGoogle) => {
     const { apiKey, clientId } = await fetch("/keys.json").then((res) => res.json());
-    // Do whatever to get the token
-    const token = "blahblahblah";
+    const tokenClient = loadedGoogle.accounts.oauth2.initTokenClient({
+      client_id: clientId,
+      scope: "https://www.googleapis.com/auth/drive",
+      callback: "", // defined later
+    });
+    console.log(loadedGapi.load("picker"));
+    return;
+    console.log(tokenClient);
 
     setScriptVars({
       loaded: true,
       gapi: loadedGapi,
-      google: loadedGoogle,
+      loadedGoogle: loadedGoogle,
       apiKey,
       clientId,
-      token,
+      tokenClient,
     });
   };
 
