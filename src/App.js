@@ -22,7 +22,8 @@ function App() {
   return (
     <div className="App">
       <div>Hello</div>
-      <button onClick={onClickButton}>Read File</button>
+
+      {scriptVars.loaded && <button onClick={onClickButton}>Read File</button>}
 
       <textarea
         value={inTextArea}
@@ -34,7 +35,9 @@ function App() {
         onChange={(e) => setUserFileName(e.target.value)}
       ></input>
 
-      <button onClick={onClickSubmitButton}>Submit File</button>
+      {scriptVars.loaded && (
+        <button onClick={onClickSubmitButton}>Submit File</button>
+      )}
 
       <div>{scriptVars.loaded ? "loaded" : "not loaded"}</div>
     </div>

@@ -23,21 +23,20 @@ async function readFileContent(data, onFileContentRead, accessToken) {
 }
 
 async function getGoogleDriveToken(scriptVars, onTokenReceived, prompt = "") {
-  const { loaded, clientId } = scriptVars;
-  if (loaded === true) {
-    const tokenClient = google.accounts.oauth2.initTokenClient({
-      client_id: clientId,
-      scope: "https://www.googleapis.com/auth/drive",
-      callback: async (response) => {
-        if (response.error !== undefined) {
-          throw response;
-        }
-        onTokenReceived(response.access_token);
-      },
-    });
+  const { clientId } = scriptVars;
 
-    tokenClient.requestAccessToken({ prompt });
-  }
+  const tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: clientId,
+    scope: "https://www.googleapis.com/auth/drive",
+    callback: async (response) => {
+      if (response.error !== undefined) {
+        throw response;
+      }
+      onTokenReceived(response.access_token);
+    },
+  });
+
+  tokenClient.requestAccessToken({ prompt });
 }
 
 export async function readFileFromGooglePicker(scriptVars, onFileContentRead) {
@@ -83,9 +82,11 @@ export async function submitFileToGoogleDrive(
 
 async function pickerSubmitCallback(data, fileName, fileContent, accessToken) {
   console.log(data);
-  let url = "nothing";
+
   const resp = await fetch("/keys.json");
+
   const { apiKey } = await resp.json();
+
   if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
     let doc = data[google.picker.Response.DOCUMENTS][0];
     let folderID = data.docs[0].id;

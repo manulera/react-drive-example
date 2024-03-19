@@ -29,8 +29,6 @@ function useGoogleDriveApi() {
 
     setScriptVars({
       loaded: true,
-      gapi: loadedGapi,
-      loadedGoogle: loadedGoogle,
       apiKey,
       clientId,
       tokenClient,
