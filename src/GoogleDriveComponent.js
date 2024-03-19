@@ -19,8 +19,9 @@ function GoogleDriveComponent({ setScriptVars }) {
       scope: "https://www.googleapis.com/auth/drive",
       callback: "", // defined later
     });
-    console.log(loadedGapi.load("picker"));
-    return;
+    loadedGapi.load("picker");
+    
+
     console.log(tokenClient);
 
     setScriptVars({

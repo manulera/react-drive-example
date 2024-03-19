@@ -4,6 +4,12 @@ import { useScript } from "usehooks-ts";
 import GoogleDriveComponent from "./GoogleDriveComponent";
 
 let accessToken = null;
+function App() {
+  const [scriptVars, setScriptVars] = React.useState({ loaded: false });
+  const [inTextArea, setInTextArea] = React.useState("");
+  const [userFileName, setUserFileName] = React.useState("");
+
+
 
 async function pickerCallback(data) {
   console.log(data);
@@ -39,8 +45,7 @@ async function pickerCallback(data) {
 
 async function createPicker(scriptVars) {
   console.log(scriptVars);
-  const { loaded, gapi, apiKey, tokenClient, loadedGoogle } = scriptVars;
-  return;
+  const { loaded, apiKey, tokenClient} = scriptVars;
   if (loaded === true) {
         const showPicker = async () => {
           // TODO(developer): Replace with your API key
@@ -75,7 +80,7 @@ async function createPicker(scriptVars) {
 
 async function createSubmitPicker(scriptVars) {
   console.log(scriptVars);
-  const { loaded, gapi, apiKey, tokenClient, google } = scriptVars;
+  const { loaded, apiKey, tokenClient } = scriptVars;
  
   if (loaded === true) {
     const showPicker = () => {
@@ -124,7 +129,7 @@ async function pickerSubmitCallback(data) {
           let folderID = data.docs[0].id;
           url = doc[google.picker.Document.URL];
           
-          let fileName = fileName;
+          let fileName = userFileName;
           let fileNameJSON = fileName + ".json";
           let fileContent = inTextArea;
           const file = new Blob([fileContent], { type: "text/plain" });
@@ -158,10 +163,7 @@ async function pickerSubmitCallback(data) {
 
 
 
-function App() {
-  const [scriptVars, setScriptVars] = React.useState({ loaded: false });
-  const [inTextArea, setInTextArea] = React.useState("");
-  const [fileName, setFileName] = React.useState("");
+
 
 
   const onClickButton = () => {
@@ -185,7 +187,7 @@ function App() {
       <button onClick={onClickButton}>Read File</button>
 
       <textarea value={inTextArea} onChange={(e) => setInTextArea(e.target.value)}></textarea>
-      <input value={fileName} onChange={(e) => setFileName(e.target.value)}></input>
+      <input value={userFileName} onChange={(e) => setUserFileName(e.target.value)}></input>
 
       <button onClick={onClickSubmitButton}>Submit File</button>
       
